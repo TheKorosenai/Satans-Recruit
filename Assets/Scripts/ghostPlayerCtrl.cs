@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ghostPlayerCtrl : MonoBehaviour { 
 
     public float moveSpeed;
     public float speedX, speedY;
     public Rigidbody2D rb;
+    
 
 
 

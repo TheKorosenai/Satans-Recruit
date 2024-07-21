@@ -10,6 +10,13 @@ public class EventManager : MonoBehaviour
     public delegate void OnDamage(GameObject enemy);
     public static event OnDamage onDamage;
 
+    public delegate void OnHideChest(GameObject chest);
+    public static event OnHideChest onHideChest;
+
+    public delegate void OnLeaveChest();
+    public static event OnLeaveChest onLeaveChest;
+
+
     public static void PlayerSwitch()
     {
         if (onPlayerSwitch != null)
@@ -27,5 +34,21 @@ public class EventManager : MonoBehaviour
             onDamage.Invoke(enemy);
         }
 
+    }
+
+    public static void hideInChest (GameObject chest)
+    {
+        if (onHideChest != null)
+        {
+            onHideChest.Invoke(chest);
+        }
+    }
+
+    public static void leaveOutChest ()
+    {
+        if (onLeaveChest != null)
+        {
+            onLeaveChest();
+        }
     }
 }

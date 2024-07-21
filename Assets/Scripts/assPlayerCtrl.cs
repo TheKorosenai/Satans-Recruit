@@ -15,6 +15,9 @@ public class assPlayerCtrl : MonoBehaviour
     public float distance;
 
     public GameObject enemyInRange;
+    public GameObject chestInRange;
+
+    public chestController chest;
 
     void Start()
     {
@@ -36,6 +39,10 @@ public class assPlayerCtrl : MonoBehaviour
         {
             EventManager.takingDamage(enemyInRange);
         }
+        if(Input.GetKeyDown(KeyCode.E) && chestInRange != null && chest.inChest == false)
+        {
+            EventManager.hideInChest(chestInRange);
+        }
 
     }
 
@@ -46,6 +53,10 @@ public class assPlayerCtrl : MonoBehaviour
         {
             enemyInRange = collision.gameObject;
         }
+        if (collision.CompareTag("Chest"))
+        {
+            chestInRange = collision.gameObject;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -53,6 +64,10 @@ public class assPlayerCtrl : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             enemyInRange = null;
+        }
+        if (collision.CompareTag("Chest"))
+        {
+            chestInRange = null;
         }
     }
 

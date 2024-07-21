@@ -5,6 +5,13 @@ using UnityEngine;
 public class enemyCtrl : MonoBehaviour
 {
 
+    public confidenceBar confidence;
+
+
+
+
+
+
     private void OnEnable()
     {
         EventManager.onDamage += onTakeDmg;
@@ -32,6 +39,7 @@ public class enemyCtrl : MonoBehaviour
         if (enemy == gameObject)
         {
             Debug.Log("I DEAD");
+            confidence.currentConf += 90;
         }
     }
 

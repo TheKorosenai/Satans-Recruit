@@ -8,6 +8,7 @@ public class playerSwap : MonoBehaviour
     public ghostPlayerCtrl ghost;
     public assPlayerCtrl assassin;
     public bool assActive = true;
+    public TimerCtrl timeRem;
 
     public CinemachineVirtualCamera camTrack;
 
@@ -21,7 +22,10 @@ public class playerSwap : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            //playerSwitch();
+            EventManager.PlayerSwitch();
+        }
+        if (timeRem.timeRemaining <= 0)
+        {
             EventManager.PlayerSwitch();
         }
 
@@ -34,7 +38,7 @@ public class playerSwap : MonoBehaviour
 
     public void playerSwitch()
     {
-        if (assActive)
+        if (assActive && timeRem.timeRemaining > 0)
         {
             camTrack.Follow = ghost.transform;
             camTrack.LookAt = ghost.transform;
