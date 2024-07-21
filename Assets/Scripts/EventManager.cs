@@ -16,6 +16,8 @@ public class EventManager : MonoBehaviour
     public delegate void OnLeaveChest();
     public static event OnLeaveChest onLeaveChest;
 
+    public delegate void OnGhostInteracted();
+    public static event OnGhostInteracted onGhostInteracted;
 
     public static void PlayerSwitch()
     {
@@ -51,4 +53,13 @@ public class EventManager : MonoBehaviour
             onLeaveChest();
         }
     }
+
+    public static void ghostInteracted()
+    {
+        if (onGhostInteracted != null)
+        {
+            onGhostInteracted();
+        }
+    }
+
 }

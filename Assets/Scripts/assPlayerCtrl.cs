@@ -17,13 +17,12 @@ public class assPlayerCtrl : MonoBehaviour
     public GameObject enemyInRange;
     public GameObject chestInRange;
 
-    public chestController chest;
+    // implemenet chesh functionality
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        ghost = GameObject.Find("Ghost").GetComponent<ghostPlayerCtrl>();
-        enemy = GameObject.Find("Enemy1").GetComponent<Rigidbody2D>();
+        ghost = transform.GetChild(0).GetComponent<ghostPlayerCtrl>();
     }
 
     // Update is called once per frame
@@ -33,13 +32,12 @@ public class assPlayerCtrl : MonoBehaviour
         speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
         rb.velocity = new Vector2(speedX, speedY);
         ghost.transform.position = new Vector3(rb.transform.position.x, rb.transform.position.y, 0);
-        distance = Vector3.Distance(rb.transform.position, enemy.transform.position);
 
         if (Input.GetKeyDown(KeyCode.Space) && enemyInRange !=null)
         {
             EventManager.takingDamage(enemyInRange);
         }
-        if(Input.GetKeyDown(KeyCode.E) && chestInRange != null && chest.inChest == false)
+        if(Input.GetKeyDown(KeyCode.E) && chestInRange != null) // also here check functionality
         {
             EventManager.hideInChest(chestInRange);
         }

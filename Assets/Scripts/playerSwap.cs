@@ -8,13 +8,18 @@ public class playerSwap : MonoBehaviour
     public ghostPlayerCtrl ghost;
     public assPlayerCtrl assassin;
     public bool assActive = true;
-    public TimerCtrl timeRem;
+    TimerCtrl timeRem;
 
     public CinemachineVirtualCamera camTrack;
 
     private void OnEnable()
     {
         EventManager.onPlayerSwitch += playerSwitch;
+    }
+
+    private void Start()
+    {
+        timeRem = GetComponent<TimerCtrl>();
     }
 
     // Update is called once per frame
