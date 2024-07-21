@@ -10,6 +10,8 @@ public class playerSwap : MonoBehaviour
     public bool assActive = true;
     TimerCtrl timeRem;
 
+    public GameObject ghostView;
+
     public CinemachineVirtualCamera camTrack;
 
     private void OnEnable()
@@ -51,7 +53,7 @@ public class playerSwap : MonoBehaviour
             ghost.enabled = true;
             assActive = false;
             assassin.rb.velocity = Vector3.zero;
-
+            ghostView.SetActive(true);
         }
         else
         {
@@ -61,6 +63,7 @@ public class playerSwap : MonoBehaviour
             ghost.enabled = false;
             assActive = true;
             ghost.rb.velocity = Vector3.zero;
+            ghostView.SetActive(false);
         }
     }
 }

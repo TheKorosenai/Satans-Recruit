@@ -24,8 +24,6 @@ public class FieldOfView : MonoBehaviour
 
     public int edgeResolveIterations;
 
-    public float maskCutawayDistance = 1f;
-
     private void Start()
     {
         viewMesh = new Mesh();
