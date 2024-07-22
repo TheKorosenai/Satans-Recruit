@@ -21,6 +21,8 @@ public class assPlayerCtrl : MonoBehaviour
 
     public GameObject ghostView;
 
+    public Animator animator;
+
 
     // implemenet chesh functionality
 
@@ -36,6 +38,7 @@ public class assPlayerCtrl : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         ghost = transform.GetChild(0).GetComponent<ghostPlayerCtrl>();
     }
@@ -48,6 +51,14 @@ public class assPlayerCtrl : MonoBehaviour
             speedX = Input.GetAxisRaw("Horizontal") * moveSpeed;
             speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
             rb.velocity = new Vector2(speedX, speedY);
+            if(speedX != 0 || speedY != 0)
+            {
+                animator.SetBool("isWalking", true);
+            }
+            else
+            {
+                animator.SetBool("isWalking", false);
+            }
             ghost.transform.position = new Vector3(rb.transform.position.x, rb.transform.position.y, 0);
 
             if (Input.GetKeyDown(KeyCode.Space) && enemyInRange != null)
@@ -82,7 +93,7 @@ public class assPlayerCtrl : MonoBehaviour
         {
             if (gameObject.GetComponent<confidenceBar>().CanKillBoss())
             {
-                EventManager.BossKill(collision.gameObject);
+                EventManager.takingDamage(collision.gameObject);
             }
             else
             {

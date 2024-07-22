@@ -14,6 +14,8 @@ public class playerSwap : MonoBehaviour
 
     public CinemachineVirtualCamera camTrack;
 
+    public bool onlyAssassin;
+
     private void OnEnable()
     {
         EventManager.onPlayerSwitch += playerSwitch;
@@ -28,15 +30,17 @@ public class playerSwap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (!onlyAssassin)
         {
-            EventManager.PlayerSwitch();
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                EventManager.PlayerSwitch();
+            }
+            if (timeRem.timeRemaining <= 0)
+            {
+                EventManager.PlayerSwitch();
+            }
         }
-        if (timeRem.timeRemaining <= 0)
-        {
-            EventManager.PlayerSwitch();
-        }
-
     }
 
     private void OnDisable()
