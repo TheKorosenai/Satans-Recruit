@@ -16,8 +16,21 @@ public class EventManager : MonoBehaviour
     public delegate void OnLeaveChest();
     public static event OnLeaveChest onLeaveChest;
 
-    public delegate void OnGhostInteracted();
+    public delegate void OnGhostInteracted(GameObject obj);
     public static event OnGhostInteracted onGhostInteracted;
+
+    public delegate void OnEnemyScare(List<GameObject> enemy, GameObject ptr);
+    public static event OnEnemyScare onEnemyScare;
+
+    public delegate void OnAssassinVisible();
+    public static event OnAssassinVisible onAssassinVisible;
+
+    public delegate void OnPlayerDeath();
+    public static event OnPlayerDeath onPlayerDeath;
+
+    public delegate void OnBossKill(GameObject bossObj);
+    public static event OnBossKill onBossKill;
+
 
     public static void PlayerSwitch()
     {
@@ -54,12 +67,44 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    public static void ghostInteracted()
+    public static void ghostInteracted(GameObject obj)
     {
         if (onGhostInteracted != null)
         {
-            onGhostInteracted();
+            onGhostInteracted(obj);
         }
     }
 
+    public static void scareEnemy(List<GameObject> enemies, GameObject ptr)
+    {
+        if (onEnemyScare != null)
+        {
+            onEnemyScare(enemies, ptr);
+        }
+    }
+
+    public static void assassinVisible()
+    {
+        if (onAssassinVisible != null)
+        {
+            onAssassinVisible();
+        }
+    }
+
+    public static void PlayerDeath()
+    {
+        if (onPlayerDeath != null)
+        {
+            onPlayerDeath();
+        }
+    }
+
+    public static void BossKill(GameObject bossObj)
+    {
+        if (onBossKill != null)
+        {
+            onBossKill(bossObj);
+        }
+    }
+    
 }

@@ -11,24 +11,50 @@ public class EnemyPatrol : MonoBehaviour
 
     public bool patrol = true;
 
-    Transform currentWaypoint;
+    public Transform currentWaypoint;
 
     int currentWaypointIndex = 0;
 
+    public float speed;
+
+    public bool disturbed = false;
+
+    public bool playerDead = false;
+
+
+    private void OnEnable()
+    {
+        EventManager.onEnemyScare += Scare;
+        EventManager.onPlayerDeath += onPlayerDeath;
+        EventManager.onDamage += onAssassinated;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.onEnemyScare -= Scare;
+        EventManager.onPlayerDeath -= onPlayerDeath;
+        EventManager.onDamage -= onAssassinated;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("WayPoints_"+gameObject.name);
-        wayPointsParent = GameObject.Find("WayPoints_"+gameObject.name).gameObject;
-        int count = GetWayPoints();
-        if(count == 0)
+        wayPointsParent = GameObject.Find("WayPoints_"+gameObject.name);
+        if (wayPointsParent == null)
         {
             patrol = false;
         }
         else
         {
-            currentWaypoint = waypoints[currentWaypointIndex];
+            int count = GetWayPoints();
+            if (count == 0)
+            {
+                patrol = false;
+            }
+            else
+            {
+                currentWaypoint = waypoints[currentWaypointIndex];
+            }
         }
         
     }
@@ -36,22 +62,50 @@ public class EnemyPatrol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (patrol)
+        if (!playerDead)
         {
-            
-            float distance = Vector3.Distance(transform.position, currentWaypoint.position);
-            if (distance < 0.1f)
+            if (patrol && !disturbed)
             {
-                currentWaypointIndex++;
-                if(currentWaypointIndex >= waypoints.Count)
+
+                float distance = Vector3.Distance(transform.position, currentWaypoint.position);
+                if (distance < 0.1f)
                 {
-                    currentWaypointIndex = 0;
+                    currentWaypointIndex++;
+                    if (currentWaypointIndex >= waypoints.Count)
+                    {
+                        currentWaypointIndex = 0;
+                    }
+                    currentWaypoint = waypoints[currentWaypointIndex];
                 }
-                currentWaypoint = waypoints[currentWaypointIndex];
+                Goto(currentWaypoint.position);
             }
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.position, Time.deltaTime);
-            transform.right = currentWaypoint.position - transform.position;
+            else if (!patrol && disturbed)
+            {
+                Goto(currentWaypoint.position);
+            }
         }
+    }
+
+    public void Goto(Vector3 position)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, position, Time.deltaTime * speed);
+        transform.right = position - transform.position;
+    }
+
+    public void Face(Vector3 pos)
+    {
+        transform.right = pos - transform.position;
+    }
+
+    public void Scare(List<GameObject> enemies, GameObject ptr)
+    {
+        if (enemies.Contains(gameObject))
+        {
+            currentWaypoint = ptr.transform;
+            disturbed = true;
+            patrol = false;
+        }
+
     }
 
     public int GetWayPoints()
@@ -65,6 +119,21 @@ public class EnemyPatrol : MonoBehaviour
             waypoints.Add(wayPointsParent.transform.GetChild(i));
         }
         return waypoints.Count;
+    }
+
+    public void onPlayerDeath()
+    {
+        playerDead = true;
+        Face(GameObject.FindGameObjectWithTag("Player").gameObject.transform.position);
+        gameObject.GetComponent<FieldOfView>().playerDead = true;
+    }
+
+    public void onAssassinated(GameObject enemy)
+    {
+        if(enemy == gameObject)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
 }

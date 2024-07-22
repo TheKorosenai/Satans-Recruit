@@ -24,6 +24,8 @@ public class FieldOfView : MonoBehaviour
 
     public int edgeResolveIterations;
 
+    public bool playerDead = false;
+
     private void Start()
     {
         viewMesh = new Mesh();
@@ -35,16 +37,21 @@ public class FieldOfView : MonoBehaviour
 
     private void LateUpdate()
     {
-        DrawFieldOfView();
+        if (!playerDead)
+        {
+            DrawFieldOfView();
+
+        }
     }
 
     IEnumerator FindTargetsWithDelay(float delay)
     {
-        while (true)
+        while (true && !playerDead)
         {
             yield return new WaitForSeconds(delay);
             FindVisibleTargets();
         }
+        yield break;
     }
 
     void FindVisibleTargets()
@@ -62,6 +69,7 @@ public class FieldOfView : MonoBehaviour
                 if (!Physics2D.Raycast(transform.position, dirToTarget, disToTarget, obstacleMask))
                 {
                     // things to do when target is visible
+                    EventManager.assassinVisible();
                     VisibleTargets.Add(target);
                 }
             }

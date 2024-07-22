@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4880205226715228180}
   - component: {fileID: 4320422410883960391}
   - component: {fileID: 4905528435893009793}
-  - component: {fileID: 2510666348469521814}
   - component: {fileID: 3586285598978408076}
   - component: {fileID: 5265002299846446651}
+  - component: {fileID: 7563005979642664712}
   m_Layer: 0
   m_Name: Char
   m_TagString: Untagged
@@ -124,19 +124,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &2510666348469521814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5588387617236545205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86af5ab58d6539946b8438acbd607fa6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 6
 --- !u!114 &3586285598978408076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +149,6 @@ MonoBehaviour:
   viewMeshFilter: {fileID: 7750314222216437896}
   edgeDistanceThreshold: 0.5
   edgeResolveIterations: 6
-  maskCutawayDistance: 0.1
 --- !u!50 &5265002299846446651
 Rigidbody2D:
   serializedVersion: 4
@@ -190,6 +176,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &7563005979642664712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5588387617236545205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b184da30cbca2546a55da526941b3d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypoints: []
+  wayPointsParent: {fileID: 0}
+  patrol: 1
 --- !u!1 &6265869437375976386
 GameObject:
   m_ObjectHideFlags: 0

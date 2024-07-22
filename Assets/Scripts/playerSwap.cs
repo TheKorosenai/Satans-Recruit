@@ -22,6 +22,7 @@ public class playerSwap : MonoBehaviour
     private void Start()
     {
         timeRem = GetComponent<TimerCtrl>();
+        ghostView.SetActive(false);
     }
 
     // Update is called once per frame

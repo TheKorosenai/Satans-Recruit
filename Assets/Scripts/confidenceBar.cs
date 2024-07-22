@@ -12,7 +12,10 @@ public class confidenceBar : MonoBehaviour
     public float ECount;
     public float currentConf;
 
-
+    private void OnEnable()
+    {
+        EventManager.onDamage += UpdateConfidence;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -27,4 +30,23 @@ public class confidenceBar : MonoBehaviour
     {
         confBar.fillAmount = currentConf / totalConf;
     }
+
+    public void UpdateConfidence(GameObject enemy)
+    {
+        enemies.Remove(enemy);
+        currentConf += 90;
+    }
+
+    public bool CanKillBoss()
+    {
+        if(currentConf / totalConf >= 0.7)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }

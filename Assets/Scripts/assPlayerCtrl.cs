@@ -17,7 +17,22 @@ public class assPlayerCtrl : MonoBehaviour
     public GameObject enemyInRange;
     public GameObject chestInRange;
 
+    public bool playerDead = false;
+
+    public GameObject ghostView;
+
+
     // implemenet chesh functionality
+
+    private void OnEnable()
+    {
+        EventManager.onAssassinVisible += Die;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.onAssassinVisible -= Die;
+    }
 
     void Start()
     {
@@ -28,18 +43,26 @@ public class assPlayerCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        speedX = Input.GetAxisRaw("Horizontal") * moveSpeed;
-        speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
-        rb.velocity = new Vector2(speedX, speedY);
-        ghost.transform.position = new Vector3(rb.transform.position.x, rb.transform.position.y, 0);
+        if (!playerDead)
+        {
+            speedX = Input.GetAxisRaw("Horizontal") * moveSpeed;
+            speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
+            rb.velocity = new Vector2(speedX, speedY);
+            ghost.transform.position = new Vector3(rb.transform.position.x, rb.transform.position.y, 0);
 
-        if (Input.GetKeyDown(KeyCode.Space) && enemyInRange !=null)
-        {
-            EventManager.takingDamage(enemyInRange);
+            if (Input.GetKeyDown(KeyCode.Space) && enemyInRange != null)
+            {
+                EventManager.takingDamage(enemyInRange);
+            }
+            if (Input.GetKeyDown(KeyCode.E) && chestInRange != null) // also here check functionality
+            {
+                EventManager.hideInChest(chestInRange);
+            }
         }
-        if(Input.GetKeyDown(KeyCode.E) && chestInRange != null) // also here check functionality
+        else
         {
-            EventManager.hideInChest(chestInRange);
+            rb.velocity = new Vector2(0, 0);
+            ghostView.SetActive(true);
         }
 
     }
@@ -55,6 +78,19 @@ public class assPlayerCtrl : MonoBehaviour
         {
             chestInRange = collision.gameObject;
         }
+        if (collision.CompareTag("Boss"))
+        {
+            if (gameObject.GetComponent<confidenceBar>().CanKillBoss())
+            {
+                EventManager.BossKill(collision.gameObject);
+            }
+            else
+            {
+                // boss kills player
+                Die();
+                EventManager.PlayerDeath();
+            }
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -69,6 +105,13 @@ public class assPlayerCtrl : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        // do something that shows I die
+        Debug.Log("Player Died");
+        EventManager.PlayerDeath();
+        playerDead = true;
+    }
 
 
 }
